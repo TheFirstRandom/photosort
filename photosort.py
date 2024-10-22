@@ -45,8 +45,15 @@ def sort(file_path, end_dir, capture):
     else:
         print(f"directory is already existing: {year_folder}")
 
-    shutil.move(file_path, year_folder)
-    print(f"moved file to: {year_folder}")
+    try:
+        shutil.move(file_path, year_folder)
+        print(f"moved file to: {year_folder}")
+    except FileExistsError as e:
+        print(e)
+        print("file is already existing in target directory, deleting... ")
+        os.remove(file_path)
+    except Exception as e:
+        print(f"Error moving file: {e}")
 
 def unsort(folder_path, end_dir):
     for item in os.listdir(folder_path):
